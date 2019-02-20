@@ -18,13 +18,28 @@ function validateNpmVersion() {
 
 function downloadCli() {
     console.log("Downloading JFrog CLI " + version );
-    https.get({
-        hostname: 'api.bintray.com',
-        port: 443,
-        path: '/content/jfrog/jfrog-cli-go/' + version + '/' + btPackage + '/' + fileName + '?bt_package=' + btPackage,
-        agent: false,
-        followAllRedirects: true
-    }, writeToFile).on('error', function (err) {console.error(err);});
+    if(process.env.https_proxy && process.env.https_proxy.length > 0) {
+        var proxyurl = process.env.https_proxy + '/https/api.bintray.com/content/jfrog/jfrog-cli-go/' + version + '/' + btPackage + '/' + fileName + '?bt_package=' + btPackage
+        var http = require('http');
+        http.get(proxyurl, function(res) {
+            if(res.statusCode == 302) {
+                var redirectproxyurl = process.env.https_proxy + res.headers.location.replace('https://', '/https/');
+                http.get(redirectproxyurl, writeToFile).on('error', function (err) {console.error(err);});
+            } else {
+                console.log("Failed to download due to proxy and redirects" + version );
+            }
+
+        }).on('error', function (err) {console.error(err);});
+    } else {
+        https.get({
+            hostname: 'api.bintray.com',
+            port: 443,
+            path: '/content/jfrog/jfrog-cli-go/' + version + '/' + btPackage + '/' + fileName + '?bt_package=' + btPackage,
+            agent: false,
+            followAllRedirects: true
+        }, writeToFile).on('error', function (err) {console.error(err);});
+    }   
+    
 }
 
 function isValidNpmVersion() {
