@@ -57,7 +57,7 @@ function writeToFile(response) {
     }).on('end', function () {
         file.end();
         if (!process.platform.startsWith("win")) {
-            fs.chmodSync(filePath, 0555)
+            fs.chmodSync(filePath, 7775)
         }
     }).on('error', function (err) {
         console.error(err);
