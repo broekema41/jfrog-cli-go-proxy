@@ -20,7 +20,6 @@
   },
   "dependencies": {
     "debug": "3.1.0",
-    "follow-redirects": "1.2.6",
     "ms": "2.0.0"
   },
   "bundledDependencies": [
