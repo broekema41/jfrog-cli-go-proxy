@@ -1,5 +1,5 @@
 {
-  "name": "jfrog-cli-go",
+  "name": "jfrog-cli-go-proxy",
   "version": "1.24.1",
   "description": "🐸 Command-line interface for JFrog Artifactory, Bintray, Mission Control and Xray 🐸",
   "homepage": "https://github.com/jfrog/jfrog-cli-go",
