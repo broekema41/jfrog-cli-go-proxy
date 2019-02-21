@@ -20,9 +20,9 @@ function validateNpmVersion() {
 function redirectDetectDownload(starturl) {
     if(process.env.https_proxy && process.env.https_proxy.length > 0) {
         var mainurl = process.env.https_proxy + starturl.replace('https://', '/https/');
+        console.log(mainurl);
         http.get(mainurl, function(res) {
             if(res.statusCode == 302) {
-                console.log(res.headers.location);
                 redirectDetectDownload(res.headers.location);
             } else if (res.statusCode == 200) {
                 writeToFile(res)
@@ -33,7 +33,6 @@ function redirectDetectDownload(starturl) {
     } else {
         https.get(starturl, function(res) {
             if(res.statusCode == 302) {
-                console.log(res.headers.location);
                 redirectDetectDownload(res.headers.location);
             } else if (res.statusCode == 200) {
                 writeToFile(res)
